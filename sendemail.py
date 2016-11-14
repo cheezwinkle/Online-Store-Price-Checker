@@ -9,12 +9,12 @@ emailsettings = config['Email Settings']
 
 def sendemail(currPrice):
         logging.info('Begin sending email')
-        smtp_server = emailsettings['smtp_server']
-        smtp_port = emailsettings['smtp_port']
-        smtp_login = emailsettings['login']
-        smtp_pw = emailsettings['password']
-        sender = emailsettings['sender']
-        recipients = emailsettings['recipients'].split(',')
+        smtp_server     = emailsettings['smtp_server']
+        smtp_port       = emailsettings['smtp_port']
+        smtp_login      = emailsettings['login']
+        smtp_pw         = emailsettings['password']
+        sender          = emailsettings['sender']
+        recipients      = emailsettings['recipients'].split(',')
         
         msg = MIMEText('A price change was detected!\nNew price: $' + str(currPrice) + '\n' + config['Webpage Settings']['url'])
         msg['Subject'] = "RT Store Price Check Alert"

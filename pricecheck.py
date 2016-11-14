@@ -11,8 +11,8 @@ config.read('config.ini')
 # Begin script
 logging.info('Starting pricecheck')
 webpagesettings = config['Webpage Settings']
-standardPrice = float(webpagesettings['standard_price'])
-currentPrice = 0.0
+standardPrice   = float(webpagesettings['standard_price'])
+currentPrice    = 0.0
 
 # Download the webpage
 logging.info('Downloading webpage')
