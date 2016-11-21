@@ -25,8 +25,10 @@ except Exception as exc:
 
 # Parse HTML for price
 logging.info('Parsing HTML')
+htmlTags = webpagesettings['html_tags']
+logging.debug(htmlTags)
 webPage = bs4.BeautifulSoup(res.text, 'html.parser')
-elems = webPage.select('span[itemprop="price"]')
+elems = webPage.select(htmlTags)
 
 # Check number of prices found (should only be 1, but just in case)
 if len(elems) > 1:
@@ -42,13 +44,16 @@ for i in elems:
         
 # Check if price has changed
 if len(elems) == 1:
-        currentPrice = float(elems[0].getText()[1:])
-        if currentPrice < standardPrice:
-                logging.info('ALERT: Price has lowered!')
-                sendemail(currentPrice)
-        elif currentPrice > standardPrice:
-                logging.info('ALERT: Price has increased!?')
-                logging.info('Not sending email.')
-        else:
-              logging.info('No price change detected.')
-              logging.info('Not sending email.')
+        try:
+                currentPrice = float(elems[0].getText().strip()[1:])
+                if currentPrice < standardPrice:
+                        logging.info('ALERT: Price has lowered!')
+                        sendemail(currentPrice)
+                elif currentPrice > standardPrice:
+                        logging.info('ALERT: Price has increased!?')
+                        logging.info('Not sending email.')
+                else:
+                        logging.info('No price change detected.')
+                        logging.info('Not sending email.')
+        except Exception as exc:
+                logging.error('There was an error: %s' % (exc))
