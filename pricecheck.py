@@ -32,7 +32,7 @@ elems = webPage.select(htmlTags)
 
 # Check number of prices found (should only be 1, but just in case)
 if len(elems) > 1:
-        logging.info(len(elems), 'prices were found')
+        logging.info('%i prices were found' % len(elems))
 elif len(elems) == 1:
         logging.info('1 price was found')
 elif len(elems) < 1:
@@ -40,7 +40,7 @@ elif len(elems) < 1:
 
 # Log prices       
 for i in elems:
-        logging.info('The current price is %s',i.getText())
+        logging.info('The current price is %s' % i.getText())
         
 # Check if price has changed
 if len(elems) == 1:
