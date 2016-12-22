@@ -1,7 +1,7 @@
 #! python3
 #  pricecheck.py - Checks the current price of a product on an online store.
 
-import requests, bs4, datetime, smtplib, logging, configparser
+import requests, bs4, datetime, smtplib, logging, configparser, re
 from sendemail import sendemail
 
 logging.basicConfig(filename='pricecheckerlog.txt', level=logging.INFO, format=' %(asctime)s -  %(levelname)s - %(message)s')
@@ -11,7 +11,7 @@ config.read('config.ini')
 # Begin script
 logging.info('Starting pricecheck')
 webpagesettings = config['Webpage Settings']
-standardPrice   = float(webpagesettings['standard_price'])
+standardPrice   = float(webpagesettings['standard_price'].replace(',', '.'))
 currentPrice    = 0.0
 
 # Download the webpage
@@ -45,7 +45,8 @@ for i in elems:
 # Check if price has changed
 if len(elems) == 1:
         try:
-                currentPrice = float(elems[0].getText().strip()[1:])
+                cleanPrice = re.sub('[^0-9,.]+', '', elems[0].getText().replace(',', '.'))
+                currentPrice = float(cleanPrice)
                 if currentPrice < standardPrice:
                         logging.info('ALERT: Price has lowered!')
                         sendemail(currentPrice)
