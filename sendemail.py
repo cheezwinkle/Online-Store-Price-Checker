@@ -17,7 +17,7 @@ def sendemail(newPrice):
         recipients = emailsettings['recipients'].split(',')
         
         msg = MIMEText('A price change was detected!\nNew price: $' + str(newPrice) + '\n' + config['Webpage Settings']['url'])
-        msg['Subject'] = "RT Store Price Check Alert"
+        msg['Subject'] = "Online Store Price Check Alert"
         msg['From']    = sender
         msg['To']      = ", ".join(recipients)
         
